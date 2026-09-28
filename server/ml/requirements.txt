@@ -1,0 +1,21 @@
+# Heavy ML dependencies, kept separate from the core app's requirements.txt
+# on purpose — the rest of the server runs fine without these installed
+# (see embedding.py: it degrades gracefully and logs a warning instead of
+# crashing if this stack isn't available). Install with:
+#   pip install -r ml/requirements.txt
+#
+# Then train a model (required before any of this does anything — see
+# training/train.py and the README):
+#   python -m training.train
+#
+# safetensors, not pickle: model weights are saved/loaded via safetensors,
+# not torch.save/torch.load's default pickle-based format. No arbitrary
+# code execution risk on load, and it's the current standard (used by
+# Hugging Face, Stable Diffusion, etc.) for exactly this reason.
+
+torch>=2.2.0
+torchvision>=0.17.0
+safetensors>=0.4.3
+Pillow>=10.3.0
+numpy>=1.26.0
+certifi>=2024.0.0

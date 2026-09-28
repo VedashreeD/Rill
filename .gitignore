@@ -1,0 +1,21 @@
+node_modules/
+.env
+server/uploads/
+server/demo-qr-codes/
+dist/
+.DS_Store
+*.tsbuildinfo
+
+# Python virtual environments — whatever you happened to name yours
+.venv/
+venv/
+devenv/
+env/
+__pycache__/
+*.pyc
+
+# Trained model + the synthetic images it was trained on — both
+# regenerable from ml/training/train.py, not source
+server/ml/checkpoints/*.safetensors
+server/ml/checkpoints/*.json
+server/ml/training/data/
