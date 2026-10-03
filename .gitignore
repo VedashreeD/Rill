@@ -5,7 +5,7 @@ server/demo-qr-codes/
 dist/
 .DS_Store
 *.tsbuildinfo
-
+*.jpeg
 # Python virtual environments — whatever you happened to name yours
 .venv/
 venv/

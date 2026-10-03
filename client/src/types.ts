@@ -53,6 +53,7 @@ export interface WorldLocation {
   imageCount: number;
   currentTier: Tier | null;
   lastReportAt: string | null;
+  latestImagePath?: string | null;
 }
 
 export interface UserPublic {

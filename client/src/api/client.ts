@@ -23,6 +23,11 @@ interface ApiErrorBody {
 async function handle<T>(res: Response): Promise<T> {
   const data = (await res.json().catch(() => ({}))) as ApiErrorBody & T;
   if (!res.ok) {
+    if (res.status === 401) {
+      localStorage.removeItem("rill_token");
+      localStorage.removeItem("rill_user");
+      window.dispatchEvent(new Event("unauthorized"));
+    }
     // FastAPI's default error shape is { detail: string }.
     const message = (data as ApiErrorBody).detail || (data as ApiErrorBody).error || "request failed";
     throw new Error(message);

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "../api/client";
+import { api, API_BASE } from "../api/client";
 import LocationArt from "../components/LocationArt";
 import TierBadge from "../components/TierBadge";
 import type { Tier, WorldLocation } from "../types";
@@ -59,7 +59,12 @@ export default function RillOverview() {
   return (
     <div className="overview-page">
       <div className="overview-header">
-        <h1>Rill Overview</h1>
+        <div className="overview-title-group">
+          <h1>Stream Intelligence</h1>
+          <p className="overview-sub">
+            Real-time telemetry, vision classification, and risk tier monitoring across all segments.
+          </p>
+        </div>
         <select
           className="tier-filter-select"
           value={minTier}
@@ -75,26 +80,42 @@ export default function RillOverview() {
 
       <div className="stat-strip">
         <div className="stat-card">
+          <div className="stat-card-accent-bar" />
           <span className="stat-value">{locations.length}</span>
-          <span className="stat-label">Locations</span>
+          <span className="stat-label">Monitored Segments</span>
         </div>
         <div className="stat-card">
+          <div className="stat-card-accent-bar" />
           <span className="stat-value">{stats.totalReports}</span>
-          <span className="stat-label">Reports</span>
+          <span className="stat-label">Telemetry Reports</span>
         </div>
         <div className="stat-card">
+          <div className="stat-card-accent-bar" />
           <span className="stat-value">{stats.totalImages}</span>
-          <span className="stat-label">Images</span>
+          <span className="stat-label">Captured Imagery</span>
         </div>
         <div className="stat-card stat-card-tiers">
-          <TierBadge tier="green" /> {stats.byTier.green}
-          <TierBadge tier="watch" /> {stats.byTier.watch}
-          <TierBadge tier="caution" /> {stats.byTier.caution}
-          <TierBadge tier="emergency" /> {stats.byTier.emergency}
+          <div className="stat-card-accent-bar" />
+          <div className="stat-tier-rows">
+            <TierBadge tier="green" />
+            <span>{stats.byTier.green}</span>
+          </div>
+          <div className="stat-tier-rows">
+            <TierBadge tier="watch" />
+            <span>{stats.byTier.watch}</span>
+          </div>
+          <div className="stat-tier-rows">
+            <TierBadge tier="caution" />
+            <span>{stats.byTier.caution}</span>
+          </div>
+          <div className="stat-tier-rows">
+            <TierBadge tier="emergency" />
+            <span>{stats.byTier.emergency}</span>
+          </div>
         </div>
       </div>
 
-      {loading && <p className="muted">Loading…</p>}
+      {loading && locations.length === 0 && <p className="muted">Loading telemetry data…</p>}
       {error && <p className="form-error">{error}</p>}
 
       <div className="location-grid">
@@ -104,7 +125,17 @@ export default function RillOverview() {
             className="location-card location-card-clickable"
             onClick={() => navigate(`/overview/${loc.code}`)}
           >
-            <LocationArt variant={loc.illustration} className="location-art" />
+            <div className="location-art-container">
+              {loc.latestImagePath ? (
+                <img
+                  src={`${API_BASE}${loc.latestImagePath}`}
+                  alt={`Latest photo for ${loc.name}`}
+                  className="location-art"
+                />
+              ) : (
+                <LocationArt variant={loc.illustration} className="location-art" />
+              )}
+            </div>
             <div className="location-card-body">
               <div className="location-card-top">
                 <span className="segment-tag">{loc.code}</span>
@@ -113,8 +144,8 @@ export default function RillOverview() {
               <h3>{loc.name}</h3>
               <p className="location-desc">{loc.description}</p>
               <div className="location-stats-row">
-                <span>{loc.reportCount} reports</span>
-                <span>{loc.imageCount} images</span>
+                <span>📊 {loc.reportCount} telemetry reports</span>
+                <span>📷 {loc.imageCount} images</span>
               </div>
             </div>
           </button>

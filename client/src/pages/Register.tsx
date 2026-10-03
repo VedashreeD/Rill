@@ -3,12 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function Register() {
-  const { register } = useAuth();
+  const { user, register } = useAuth();
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
+  if (user) {
+    navigate("/overview", { replace: true });
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -16,7 +20,7 @@ export default function Register() {
     setBusy(true);
     try {
       await register(username, password);
-      navigate("/watch");
+      navigate("/overview");
     } catch (err) {
       setError(err instanceof Error ? err.message : "registration failed");
     } finally {

@@ -32,8 +32,11 @@ async def list_locations() -> list[WorldLocationOut]:
             if tier:
                 current_tier = tier
                 break
-        if reports:
-            last_report_at = reports[0]["createdAt"]
+        latest_image_path = None
+        for r in reports:
+            if r.get("imagePath"):
+                latest_image_path = r["imagePath"]
+                break
 
         results.append(
             WorldLocationOut(
@@ -47,6 +50,7 @@ async def list_locations() -> list[WorldLocationOut]:
                 imageCount=image_count,
                 currentTier=current_tier,
                 lastReportAt=last_report_at,
+                latestImagePath=latest_image_path,
             )
         )
 

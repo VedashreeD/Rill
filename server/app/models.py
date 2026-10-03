@@ -100,3 +100,4 @@ class WorldLocationOut(BaseModel):
     imageCount: int
     currentTier: Optional[str] = None
     lastReportAt: Optional[datetime] = None
+    latestImagePath: Optional[str] = None

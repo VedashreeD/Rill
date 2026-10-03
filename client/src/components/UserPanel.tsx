@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api/client";
 import { useAuth } from "../context/AuthContext";
@@ -83,7 +84,7 @@ export default function UserPanel({ open, onClose }: Props) {
 
   if (!open) return null;
 
-  return (
+  return createPortal(
     <div className="settings-overlay" onClick={onClose}>
       <aside className="settings-panel" onClick={(e) => e.stopPropagation()}>
         <div className="settings-header">
@@ -203,6 +204,7 @@ export default function UserPanel({ open, onClose }: Props) {
           </>
         )}
       </aside>
-    </div>
+    </div>,
+    document.body
   );
 }

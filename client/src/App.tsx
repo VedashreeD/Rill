@@ -9,7 +9,14 @@ import RillOverview from "./pages/RillOverview";
 import LocationDetail from "./pages/LocationDetail";
 
 function RequireAuth({ children }: { children: ReactElement }) {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+  if (loading) {
+    return (
+      <div style={{ padding: "3rem", textAlign: "center", color: "var(--muted)" }}>
+        Verifying session…
+      </div>
+    );
+  }
   return user ? children : <Navigate to="/login" replace />;
 }
 
